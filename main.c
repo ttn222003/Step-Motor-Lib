@@ -5,6 +5,7 @@
 int ppr;
 int delay;
 int pulse;
+int count = 0;
 
 // Create variable control
 int angle;
@@ -31,6 +32,6 @@ int main(void)
     while (1)
     {
         // Run Motor
-        RunMotorCounter_clockwise(delay, pulse);
+        RunMotorCounter_clockwise(delay, &count);
     }
 }

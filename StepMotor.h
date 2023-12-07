@@ -35,7 +35,7 @@ int Pulse(int angle_rotation, int number_of_rotation);
 void delay_us(uint32_t time_delay);
 void WritePWM_Increase(float* array, uint8_t mode);
 void WritePWM_Decrease(float* array, uint8_t mode);
-void RunMotorClockwise(uint32_t time_delay_tau, int pulse);
-void RunMotorCounter_clockwise(uint32_t time_delay_tau, int pulse);
+void RunMotorClockwise(uint32_t time_delay_tau, int* counted_pulse);
+void RunMotorCounter_clockwise(uint32_t time_delay_tau, int* counted_pulse);
 void ResetPinState(void);
 #endif

@@ -10,7 +10,7 @@ float PWM_decrease[MODE];
 
 float micro_step_angle = 1.8 / MODE;
 float theta = (90.0 / (MODE * 1.0)) * 3.14 / 180.0;
-int counted_pulse = 0;
+
 
 int Pulse_Per_Round(int angle_rotation)
 {
@@ -63,7 +63,7 @@ void WritePWM_Decrease(float* array, uint8_t mode)															// Find all PWM
 // If you use other channel of PWM, then change CCR
 // Example: I use channel 1 instead of channel 3
 // Then TIM1->CCR1 = ...;
-void RunMotorClockwise(uint32_t time_delay_tau, int pulse) 
+void RunMotorClockwise(uint32_t time_delay_tau, int* counted_pulse) 
 {
 	for(uint8_t i = 0; i < 8; i = i + 2)
 	{
@@ -78,8 +78,7 @@ void RunMotorClockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR3 = PWM_increase[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-				while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
 	
 			
@@ -87,8 +86,7 @@ void RunMotorClockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR2 = PWM_decrease[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-				while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}	
 		}
 		
@@ -98,8 +96,7 @@ void RunMotorClockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR2 = PWM_increase[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-			while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
 			
 			
@@ -107,8 +104,7 @@ void RunMotorClockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR3 = PWM_decrease[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-				while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
 		}
 	}
@@ -117,7 +113,7 @@ void RunMotorClockwise(uint32_t time_delay_tau, int pulse)
 // If you use other channel of PWM, then change CCR
 // Example: I use channel 1 instead of channel 3
 // Then TIM1->CCR1 = ...;
-void RunMotorCounter_clockwise(uint32_t time_delay_tau, int pulse)
+void RunMotorCounter_clockwise(uint32_t time_delay_tau, int* counted_pulse)
 {
 	for(uint8_t i = 0; i < 8; i = i + 2)
 	{
@@ -132,19 +128,15 @@ void RunMotorCounter_clockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR3 = PWM_increase[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-				while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
-	
 			
 			for(uint8_t j = 0; j < MODE; j++)
 			{
 				TIM1->CCR2 = PWM_decrease[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-				while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
-			
 		}
 		
 		else if(i == 2 || i == 6)
@@ -153,8 +145,7 @@ void RunMotorCounter_clockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR2 = PWM_increase[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-			while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
 			
 			
@@ -162,8 +153,7 @@ void RunMotorCounter_clockwise(uint32_t time_delay_tau, int pulse)
 			{
 				TIM1->CCR3 = PWM_decrease[j] * SET_ARR;
 				delay_us(time_delay_tau / MODE);
-				counted_pulse++;
-			while(counted_pulse == pulse);
+				*counted_pulse = *counted_pulse + 1;
 			}
 		}
 	}
